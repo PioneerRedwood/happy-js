@@ -1,0 +1,22 @@
+{
+  "name": "nomad-cloning",
+  "version": "1.0.0",
+  "description": "backend-auth modules",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "backend",
+    "authentication"
+  ],
+  "author": "PioneerRedwood",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PioneerRedwood/nomad-cloning/issues"
+  },
+  "homepage": "https://github.com/PioneerRedwood/nomad-cloning#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
