@@ -30,6 +30,7 @@ app.use(function (req, res, next) {
   const msg = req.session.success;
   delete req.session.error;
   delete req.session.success;
+  
   res.locals.message = "";
   if (err) res.locals.message = '<p class="msg error">' + err + "</p>";
   if (msg) res.locals.message = '<p class="msg success">' + msg + "</p>";
@@ -54,14 +55,14 @@ hash({password: '1234'}, function(err, pass, salt, hash) {
   }
 
   // store the salt & hash in the "db"
-  console.log(salt);
-  console.log(hash);
+  // console.log(salt);
+  // console.log(hash);
 
   users.red.salt = salt;
   users.red.hash = hash;
 });
 
-console.log(users.red);
+// console.log(users.red);
 
 // Authenticate using our plain-object database of doom
 function authenticate(name, pass, fn) {

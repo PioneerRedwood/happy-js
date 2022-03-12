@@ -6,15 +6,15 @@
 </head>
 
 <body class="container">
-
+  
   <header>
     <%- include('partials/header'); %>
   </header>
 
   <main>
     <div class="jumbotron">
-      <h1>HomeSweetHome</h1>
-      <p>EJS</p>
+      <h1 id="title">HomeSweetHome</h1>
+      <p id="ejs">EJS</p>
     </div>
   </main>
 
@@ -23,5 +23,34 @@
   </footer>
 
 </body>
+
+<script>
+  document.querySelector("h1").onmouseenter = ()=>{
+    // id가 title인 요소 가져오기
+    // console.dir(document.getElementById("ejs"));
+    
+    // 태그가 body main div 오른쪽으로 갈수록 내부에 있는 것
+    // console.dir(document.querySelector(".container .jumbotron #title"));
+
+    // class가 button인 요소들 배열로 가져오기
+    // console.dir(document.getElementsByClassName("button"));
+
+
+    // console.dir(document.querySelectorAll(".container div:first-child"));
+
+  }
+
+  const ejsTag = document.querySelector(".container .jumbotron #ejs");
+  ejsTag.addEventListener("click", ()=>{
+    alert("EJS!");
+    console.log(ejsTag.classList);
+    ejsTag.classList.add("ejs2");
+    ejsTag.className = "ejs";
+  });
+  ejsTag.classList.toggle();
+
+
+
+</script>
 
 </html>
