@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nostalgia App</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="src/style.css" />
+    
+    <script src="src/storage.js"></script>
+    <script src="src/quotes.js"></script>
+    <script src="src/clock.js"></script>
+  </head>
+
+  <body>
+    <form class="hidden" id="login-form">
+      <input required type="text" placeholder="Write your name and Press Enter">
+      <input type="submit" value="Log In">
+    </form>
+    <h1 class="hidden" id="greeting"></h1>
+
+    <div id="quote">
+      <span></span>
+      <span></span>
+    </div>
+
+    <h2 id="js-clock"></h2>
+  </body>
+</html>
