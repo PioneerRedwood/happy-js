@@ -4,24 +4,26 @@
     <title>Nostalgia App</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="src/style.css" />
-    
-    <script src="src/storage.js"></script>
-    <script src="src/quotes.js"></script>
-    <script src="src/clock.js"></script>
   </head>
 
   <body>
+    <h2 id="clock">00:00:00</h2>
     <form class="hidden" id="login-form">
       <input required type="text" placeholder="Write your name and Press Enter">
       <input type="submit" value="Log In">
     </form>
     <h1 class="hidden" id="greeting"></h1>
 
+    <form class="hidden" id="todo-form"></form>
+
     <div id="quote">
       <span></span>
+      <br>
       <span></span>
     </div>
 
-    <h2 id="js-clock"></h2>
+    <script src="src/storage.js"></script>
+    <script src="src/quotes.js"></script>
+    <script src="src/clock.js"></script>
   </body>
 </html>

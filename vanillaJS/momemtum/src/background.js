@@ -1,0 +1,5 @@
+const backgroundImages = [];
+
+window.onload = () => {
+  
+};

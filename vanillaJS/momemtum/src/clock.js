@@ -1,9 +1,8 @@
-window.onload = () => {
-  function tick() {
-    const now = new Date();
-    const clockTitle = document.querySelector("#js-clock");
-    clockTitle.innerHTML = `${now.getDay()}d ${now.getHours()}h ${now.getMinutes()}m ${now.getSeconds()}s`;
-  }
+const clock = document.querySelector("#clock");
 
-  setInterval(tick, 1000);
-};
+function tick() {
+  const now = new Date();
+  clock.innerHTML = `${now.getHours()}:${now.getMinutes()}:${String(now.getSeconds()).padStart("0", 2)}`;
+}
+
+setInterval(tick, 1000);
