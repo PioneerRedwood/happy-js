@@ -1,7 +1,15 @@
-const backgroundImages = ["black.jpg", "ocean.jpg", "Ristonia.jpg", "valley.jpg"];
-const selectedImage = backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
-const background = document.createElement("img");
+const backgroundImages = [
+  "JohnWick.jpg",
+  "Ocean.jpg",
+  "Ristonia.jpg",
+  "Space.jpg",
+  "Valley.jpg",
+  "Wonderer.jpg",
+];
 
-background.src = `images/${selectedImage}`;
-
-document.body.appendChild(background);
+setTimeout(() => {
+  const selectedImage =
+    backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
+    
+  document.body.style.background = `url(images/${selectedImage})`;
+}, 500);

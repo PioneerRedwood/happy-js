@@ -1,35 +1,62 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Nostalgia App</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="src/style.css" />
-  </head>
 
-  <body>
-    <h2 id="clock">00:00:00</h2>
+<head>
+  <title>Nostalgia App</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="src/style.css" />
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+</head>
+
+<body>
+  <div id="left-side">
+    <h2 id="clock">00:00:00</h2>A rose by any other name would smell as sweet.	
     <form class="hidden" id="login-form">
       <input required type="text" placeholder="Write your name and Press Enter">
       <input type="submit" value="Log In">
     </form>
     <h1 class="hidden" id="greeting"></h1>
 
-    <form id="todo-form">
-      <input required type="text" placeholder="Write a To Do and Press Enter">
-    </form>
-
-    <ul id="todo-list"></ul>
-
     <div id="quote">
       <span></span>
-      <br>
+      <br/>
       <span></span>
     </div>
 
-    <script src="src/storage.js"></script>
-    <script src="src/quotes.js"></script>
-    <script src="src/clock.js"></script>
-    <script src="src/background.js"></script>
-    <script src="src/todo.js"></script>
-  </body>
+    <div id="todo-div">
+      <form id="todo-form">
+        <input required type="text" placeholder="Write a To Do and Press Enter">
+      </form>
+  
+      <ul id="todo-list"></ul>
+    </div>
+  </div>
+
+  <div id="right-side">
+    <div>
+      <!-- map -->
+      <button id="find-me">Show my location</button><br />
+      <div id="weather-map"></div>
+      <p id="location-status"></p>
+      <a id="map-link" target="_blank"></a>
+    </div>
+
+    <div>
+      <!-- weather -->
+      <h2 id="search-weather">How is it weather for here?</h2>
+      <p id="weather-status"></p>
+    </div>
+    
+  </div>
+  
+  <script src="src/login.js"></script>
+  <script src="src/quotes.js"></script>
+  <script src="src/clock.js"></script>
+  <script src="src/background.js"></script>
+  <script src="src/todo.js"></script>
+  <script src="src/location.js"></script>
+  <script src="src/weather.js"></script>
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+</body>
+
 </html>
