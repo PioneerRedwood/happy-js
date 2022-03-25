@@ -20,24 +20,36 @@ const startHandler = () => {
   console.log("zoom building complete! come inside http:localhost:3000");
 }
 
-// app.listen(3000, startHandler);
-
 const server = http.createServer(app);
-
 const wss = new WebSocket.Server({ server });
 
+const sockets = [];
+
 wss.on("connection", (socket) => {
-  console.log("New Connection!");
-  
-  socket.on("close", () => { 
+  sockets.push(socket);
+
+  console.log(`New Connection! ${sockets.length}`);
+
+  socket.onclose = () => { 
     console.log("Disconnected from the browser"); 
-  });
+  };
 
-  socket.on("message", (message) => {
-    console.log(`${message}`);
-  });
+  socket.onmessage = (event) => {
+    console.log("new message!");
+    const data = event.data;
 
-  socket.send("hello?");
-}); 
+    const parsed = JSON.parse(data);
+    console.log(parsed);
+
+    switch(parsed.type) {
+      case "message":
+        sockets.forEach((sock) => {
+          sock.send(`${sock.nickname}: ${parsed.payload}`);
+        });
+      case "nickname":
+        socket["nickname"] = parsed.payload;
+    }
+  };
+});
 
 server.listen(3000, startHandler);
