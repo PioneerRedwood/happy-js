@@ -1,4 +1,5 @@
-import WebSocket from "ws";
+// import WebSocket from "ws";
+import SocketIO from "socket.io";
 import http from "http";
 import express from "express";
 
@@ -17,12 +18,28 @@ app.use("/*", (_, res) => {
 });
 
 const startHandler = () => {
-  console.log("zoom building complete! come inside http:localhost:3000");
+  console.log("zoom building complete! http:localhost:3000");
 }
 
-const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+const httpServer = http.createServer(app);
+const wsServer = SocketIO(httpServer);
 
+wsServer.on("connection", (socket) => {
+  socket.onAny((event) => {
+    console.log(`Socket event "${event}"`);
+  });
+
+  socket.on("enter_room", (roomName, completion) => {
+    socket.join(roomName);
+    
+    completion();
+
+    socket.to(roomName).emit("welcome");
+  });
+});
+
+/* 
+const wss = new WebSocket.Server({ server });
 const sockets = [];
 
 wss.on("connection", (socket) => {
@@ -51,5 +68,6 @@ wss.on("connection", (socket) => {
     }
   };
 });
+ */
 
-server.listen(3000, startHandler);
+httpServer.listen(3000, startHandler);
