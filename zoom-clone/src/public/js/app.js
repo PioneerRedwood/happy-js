@@ -18,7 +18,7 @@ function handleMessageSubmit(event) {
   event.preventDefault();
   const input = room.querySelector("#message input");
   const value = input.value;
-  socket.emit("new_message", input.value, roomName, ()=> {
+  socket.emit("new_message", input.value, roomName, () => {
     addMessage(`You: ${value}`);
   });
   input.value = "";
@@ -57,12 +57,12 @@ socket.on("welcome", (user) => {
   addMessage(`${user} joined`);
 });
 
-socket.on("bye", (user)=> {
+socket.on("bye", (user) => {
   console.log("someone left");
   addMessage(`${user} left`);
 })
 
-socket.on("new_message", (message)=> {
+socket.on("new_message", (message) => {
   addMessage(message);
 });
 
