@@ -26,13 +26,13 @@ const wsServer = SocketIO(httpServer);
 
 function publicRooms() {
   const {
-    socket: {
+    sockets: {
       adapter: { sids, rooms }
     },
   } = wsServer;
 
   const publicRooms = [];
-  room.forEach((_, key) => {
+  rooms.forEach((_, key) => {
     if (sids.get(key) === undefined) {
       publicRooms.push(key);
     }
@@ -43,7 +43,7 @@ function publicRooms() {
 wsServer.on("connection", (socket) => {
   socket["nickname"] = "Anonymous";
   socket.onAny((event) => {
-    console.log(wsServer.sockets.adapter);
+    // console.log(wsServer.sockets.adapter);
     console.log(`Socket event "${event}"`);
   });
 
@@ -51,6 +51,7 @@ wsServer.on("connection", (socket) => {
     socket.join(roomName);
     completion();
     socket.to(roomName).emit("welcome", socket.nickname);
+    wsServer.sockets.emit("room_change", publicRooms());
   });
 
   socket.on("disconnecting", () => {
@@ -59,6 +60,10 @@ wsServer.on("connection", (socket) => {
     });
   });
 
+  socket.on("disconnect", ()=> {
+    wsServer.sockets.emit("room_change", publicRooms());
+  });
+  
   socket.on("new_message", (message, room, completion) => {
     socket.to(room).emit("new_message", `${socket.nickname}: ${message}`);
     completion();

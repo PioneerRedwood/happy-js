@@ -66,3 +66,17 @@ socket.on("new_message", (message) => {
   addMessage(message);
 });
 
+socket.on("room_change", (rooms) => {
+  const roomList = welcome.querySelector("ul");
+  roomList.innerText = "";
+
+  if(rooms.length === 0) {  
+    return;
+  }
+
+  rooms.forEach((room) => {  
+    const li = document.createElement("li");
+    li.innerText = room;
+    roomList.append(li);
+  });
+});
