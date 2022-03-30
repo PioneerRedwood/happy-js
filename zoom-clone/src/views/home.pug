@@ -11,22 +11,29 @@ html(lang="en")
       h1 ZOOM by Redwoody
     main
       h3 Always be full of passion!
-      div#welcome
-        form
-          input(type="text", placeholder="Room name", required)
-          button Enter room
-        h4 Open rooms:
-        ul
-      div#room
-        h3
-        ul
-        form#name
-          input(type="text", placeholder="write a name", required)
-          button Save
+      //- 2022-03-30 chatting part
+      //- div#welcome
+      //-   form
+      //-     input(type="text", placeholder="Room name", required)
+      //-     button Enter room
+      //-   h4 Open rooms:
+      //-   ul
+      //- div#room
+      //-   h3
+      //-   ul
+      //-   form#name
+      //-     input(type="text", placeholder="write a name", required)
+      //-     button Save
+      //-   form#message
+      //-     input(type="text", placeholder="write a message", required)
+      //-     button Send
 
-        form#message
-          input(type="text", placeholder="write a message", required)
-          button Send
+      //- 2022-03-30 video part
+      div#myStream
+        h3 This time to show!
+        video#myVideo(autoPlay, playsinline, width="400", height="400") 
+        button#micButton Unmute
+        button#cameraButton Turn camera on
 
     script(src="socket.io/socket.io.js")
     script(src="public/js/app.js")

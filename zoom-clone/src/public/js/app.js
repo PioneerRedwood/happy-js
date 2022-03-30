@@ -1,5 +1,7 @@
 const socket = io();
 
+// 2022-03-30 chatting part
+/*
 const welcome = document.getElementById("welcome");
 const welcomeForm = welcome.querySelector("form");
 const room = document.getElementById("room");
@@ -80,3 +82,75 @@ socket.on("room_change", (rooms) => {
     roomList.append(li);
   });
 });
+*/
+
+// 2022-03-30 video part
+const myVideo = document.getElementById("myVideo");
+const micButton = document.getElementById("micButton");
+const cameraButton = document.getElementById("cameraButton");
+
+let myStream;
+let micSwitch = false;
+let cameraSwitch = false;
+
+micButton.addEventListener("click", () => {
+  // myStream.getAudioTracks().forEach((track)=> {
+  //   track.enabled = !track.enabled;
+  // });
+
+  micSwitch = !micSwitch;
+  myVideo.muted = !micSwitch;
+
+  if(micSwitch) {
+    micButton.innerText = "Mic Off";
+  } else {
+    micButton.innerText = "Mic On";
+  }
+  
+  console.log(`muted? ${micSwitch}`);
+});
+
+cameraButton.addEventListener("click", () => {
+  myStream.getVideoTracks().forEach((track)=>{
+    track.enabled = !track.enabled;
+  });
+
+  cameraSwitch = !cameraSwitch;
+  
+  if(cameraSwitch) {
+    cameraButton.innerText = "Turn camera off";
+  } else {
+    cameraButton.innerText = "Turn camera on";
+  }
+  
+  console.log(`camera? ${cameraSwitch}`);
+});
+
+async function getCameras() {
+  try {
+    const cameras = navigator.mediaDevices.enumerateDevices();
+    console.log(cameras);
+  } catch(error) {
+    console.error(error);
+  }
+}
+
+async function getMedia() {
+  try {
+    myStream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: true,
+    });
+
+    myVideo.srcObject = myStream;
+    myVideo.muted = true;
+    await getCameras();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+getMedia();
+
+
+
