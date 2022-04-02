@@ -10,6 +10,8 @@ Welcome to zoom cloning! 🤓
 - protocols: HTTP, WebSocket, REST API
 - Socket.IO
 - WebRTC
+- localtunnel
+- STUN server
 
 
 ## References

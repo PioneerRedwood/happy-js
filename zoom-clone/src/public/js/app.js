@@ -115,7 +115,7 @@ function toggleVideo() {
   cameraSwitch = !cameraSwitch;
 
   cameraSwitch ? cameraButton.innerText = "Turn camera Off" : cameraButton.innerText = "Turn camera On";
-  
+
   myStream.getVideoTracks().forEach((track) => {
     track.enabled = cameraSwitch;
   });
@@ -172,7 +172,7 @@ let roomName;
 async function handleWelcomeSubmit(event) {
   event.preventDefault();
   const input = welcomeForm.querySelector("input");
-  
+
   // 
   await initCall();
   socket.emit("join_room", input.value);
@@ -214,7 +214,7 @@ socket.on("offer", async (offer) => {
   console.log("send the offer");
 });
 
-socket.on("answer", (answer)=> {
+socket.on("answer", (answer) => {
   // received the answer
   console.log("received the answer");
   myPeerConnection.setRemoteDescription(answer);
@@ -230,7 +230,18 @@ let myPeerConnection;
 
 // set stream to new connection
 function createConnection() {
-  myPeerConnection = new RTCPeerConnection();
+  myPeerConnection = new RTCPeerConnection({
+    iceServers: [{
+      // do not use this, when you are using a real production
+      urls: [
+        "stun:stun.l.google.com:19302",
+        "stun:stun1.l.google.com:19302",
+        "stun:stun2.l.google.com:19302",
+        "stun:stun3.l.google.com:19302",
+        "stun:stun4.l.google.com:19302",
+      ]
+    }],
+  });
   myPeerConnection.addEventListener("icecandidate", handleIce);
   myPeerConnection.addEventListener("addstream", handleAddStream);
 
