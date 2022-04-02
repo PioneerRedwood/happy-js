@@ -114,5 +114,32 @@ wsServer.on("connection", (socket) => {
 
 // 2022-03-30 video part
 
+wsServer.on("connection", (socket) => {
+
+  // [START join_room ]
+  socket.on("join_room", (roomName) => {
+    socket.join(roomName);
+    socket.to(roomName).emit("welcome");
+  });
+  // [END join_room ]
+
+  // [START offer ]
+  socket.on("offer", (offer, roomName) => {
+    socket.to(roomName).emit("offer", offer);
+  });
+  // [END offer ]
+
+  // [ START answer ]
+  socket.on("answer", (answer, roomName) => {
+    socket.to(roomName).emit("answer", answer);
+  });
+  // [ END answer ]
+
+  // [ START ice ]
+  socket.on("ice", (ice, roomName) => {
+    socket.to(roomName).emit("ice", ice);
+  });
+  // [ END ice ]
+});
 
 httpServer.listen(3000, startHandler);

@@ -29,11 +29,18 @@ html(lang="en")
       //-     button Send
 
       //- 2022-03-30 video part
-      div#myStream
-        h3 This time to show!
-        video#myVideo(autoPlay, playsinline, width="400", height="400") 
-        button#micButton Unmute
-        button#cameraButton Turn camera on
+      div#welcome
+        form
+          input(type="text", placeholder="Room name", required)
+          button Enter room
+
+      div#call
+        div#myStream
+          h3 This time to show!
+          video#myVideo(autoPlay, playsinline, width="400", height="400") 
+          button#micButton Mute
+          button#cameraButton Turn camera Off
+        video#peersFace(autoPlay, playsinline, width="400", height="400")
 
     script(src="socket.io/socket.io.js")
     script(src="public/js/app.js")

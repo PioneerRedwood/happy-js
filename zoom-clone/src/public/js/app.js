@@ -89,51 +89,51 @@ const myVideo = document.getElementById("myVideo");
 const micButton = document.getElementById("micButton");
 const cameraButton = document.getElementById("cameraButton");
 
+const call = document.getElementById("call");
+call.hidden = true;
+
 let myStream;
-let micSwitch = false;
-let cameraSwitch = false;
+let micSwitch = true;
+let cameraSwitch = true;
 
-micButton.addEventListener("click", () => {
-  // myStream.getAudioTracks().forEach((track)=> {
-  //   track.enabled = !track.enabled;
-  // });
-
+// media part 
+function toggleAudio() {
   micSwitch = !micSwitch;
-  myVideo.muted = !micSwitch;
 
-  if(micSwitch) {
-    micButton.innerText = "Mic Off";
-  } else {
-    micButton.innerText = "Mic On";
-  }
-  
-  console.log(`muted? ${micSwitch}`);
-});
+  micSwitch ? micButton.innerText = "Mute" : micButton.innerText = "Unmute";
 
-cameraButton.addEventListener("click", () => {
-  myStream.getVideoTracks().forEach((track)=>{
-    track.enabled = !track.enabled;
+  myStream.getAudioTracks().forEach((track) => {
+    track.enabled = micSwitch;
   });
 
-  cameraSwitch = !cameraSwitch;
-  
-  if(cameraSwitch) {
-    cameraButton.innerText = "Turn camera off";
-  } else {
-    cameraButton.innerText = "Turn camera on";
-  }
-  
-  console.log(`camera? ${cameraSwitch}`);
-});
-
-async function getCameras() {
-  try {
-    const cameras = navigator.mediaDevices.enumerateDevices();
-    console.log(cameras);
-  } catch(error) {
-    console.error(error);
-  }
+  console.log(`toggleAudio() ${micSwitch}`);
 }
+
+micButton.addEventListener("click", toggleAudio);
+
+function toggleVideo() {
+  cameraSwitch = !cameraSwitch;
+
+  cameraSwitch ? cameraButton.innerText = "Turn camera Off" : cameraButton.innerText = "Turn camera On";
+  
+  myStream.getVideoTracks().forEach((track) => {
+    track.enabled = cameraSwitch;
+  });
+
+  console.log(`toggleAudio() ${cameraSwitch}`);
+}
+
+cameraButton.addEventListener("click", toggleVideo);
+
+// camera selection feature but not going to be supported
+// async function getCameras() {
+//   try {
+//     // const cameras = navigator.mediaDevices.enumerateDevices();
+//     // console.log(cameras);
+//   } catch(error) {
+//     console.error(error);
+//   }
+// }
 
 async function getMedia() {
   try {
@@ -143,14 +143,109 @@ async function getMedia() {
     });
 
     myVideo.srcObject = myStream;
-    myVideo.muted = true;
-    await getCameras();
+    // await getCameras();
   } catch (error) {
     console.error(error);
   }
 }
 
-getMedia();
+// for debugging
+function turnMediaOffWhenStarting() {
+  toggleAudio();
+  toggleVideo();
+}
 
+async function initCall() {
+  welcome.hidden = true;
+  call.hidden = false;
 
+  await getMedia();
+  turnMediaOffWhenStarting();
+  createConnection();
+}
 
+// room part
+const welcome = document.getElementById("welcome");
+const welcomeForm = welcome.querySelector("form");
+let roomName;
+
+async function handleWelcomeSubmit(event) {
+  event.preventDefault();
+  const input = welcomeForm.querySelector("input");
+  
+  // 
+  await initCall();
+  socket.emit("join_room", input.value);
+  roomName = input.value;
+  input.value = "";
+}
+
+welcomeForm.addEventListener("submit", handleWelcomeSubmit);
+
+// socket part
+
+// welcome is the side(peer) of sending to connect first -- A
+// offer is the side(peer) of receiving from the other peer -- B
+
+/**
+ * A -> B
+ *  - first connection
+ * A <- B
+ * 
+ * 
+ */
+socket.on("welcome", async () => {
+  // send the offer to peer
+  const offer = await myPeerConnection.createOffer();
+  myPeerConnection.setLocalDescription(offer);
+  console.log("sent the offer");
+  socket.emit("offer", offer, roomName);
+});
+
+socket.on("offer", async (offer) => {
+  // received the offer
+  console.log("received the offer");
+  myPeerConnection.setRemoteDescription(offer);
+
+  // send the answer
+  const answer = await myPeerConnection.createAnswer();
+  myPeerConnection.setLocalDescription(answer);
+  socket.emit("answer", answer, roomName);
+  console.log("send the offer");
+});
+
+socket.on("answer", (answer)=> {
+  // received the answer
+  console.log("received the answer");
+  myPeerConnection.setRemoteDescription(answer);
+});
+
+socket.on("ice", (iceCandidate) => {
+  console.log("received iceCandidate");
+  myPeerConnection.addIceCandidate(iceCandidate);
+});
+
+// RTC part
+let myPeerConnection;
+
+// set stream to new connection
+function createConnection() {
+  myPeerConnection = new RTCPeerConnection();
+  myPeerConnection.addEventListener("icecandidate", handleIce);
+  myPeerConnection.addEventListener("addstream", handleAddStream);
+
+  myStream.getTracks()
+    .forEach((track) => {
+      myPeerConnection.addTrack(track, myStream);
+    });
+}
+
+function handleIce(data) {
+  console.log("send iceCandidate");
+  socket.emit("ice", data.candidate, roomName);
+}
+
+function handleAddStream(data) {
+  const peerFace = document.getElementById("peersFace");
+  peerFace.srcObject = data.stream;
+}

@@ -10,3 +10,8 @@ Welcome to zoom cloning! 🤓
 - protocols: HTTP, WebSocket, REST API
 - Socket.IO
 - WebRTC
+
+
+## References
+- https://developer.mozilla.org/ko/docs/Web/API/WebRTC_API/Signaling_and_video_calling
+- 
